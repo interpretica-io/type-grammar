@@ -1,10 +1,21 @@
 grammar Type;
 
+UNION:      'union';
+ENUM:       'enum';
+STRUCT:     'struct';
+LPAREN:     '(';
+RPAREN:     ')';
+LBRACKET:   '[';
+RBRACKET:   ']';
+ASTERISK:   '*';
+COMMA:      ',';
+
+WS: [ \n\t\r]+ -> skip;
+
 fragment
 IdentifierNondigit
     :   Nondigit
     |   UniversalCharacterName
-    //|   // other implementation-defined characters...
     ;
 
 fragment
@@ -15,11 +26,6 @@ Nondigit
 fragment
 Digit
     :   [0-9]
-    ;
-
-fragment
-Star
-    :   '*'
     ;
 
 fragment
@@ -49,24 +55,28 @@ Size
     : Digit+
     ;
 
-EnumUnionStruct
-    : 'union'
-    | 'enum'
-    | 'struct'
-    ;
-
-StarPointer
-    : Star
-    ;
-
-StarIndirection
-    : Star
+enum_union_struct
+    : UNION
+    | ENUM
+    | STRUCT
     ;
 
 param_list
-    : type_name (',' type_name)*
+    : LPAREN type_name (COMMA type_name)* RPAREN
+    ;
+
+simple_type
+    : enum_union_struct? Identifier
+    ;
+
+pointer_indirection
+    : (LPAREN (ASTERISK)* RPAREN)
+    ;
+
+size_specification
+    : LBRACKET Size? RBRACKET
     ;
 
 type_name
-    : EnumUnionStruct? Identifier StarPointer* ('(' (StarIndirection)* ')')? ('[' Size? ']')* (param_list)
+    : simple_type (ASTERISK)* pointer_indirection? (size_specification)* (param_list)?
     ;
