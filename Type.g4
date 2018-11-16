@@ -63,6 +63,7 @@ enum_union_struct
 
 param_list
     : LPAREN type_name (COMMA type_name)* RPAREN
+    | LPAREN RPAREN
     ;
 
 simple_type
@@ -70,7 +71,7 @@ simple_type
     ;
 
 pointer_indirection
-    : (LPAREN (ASTERISK)* RPAREN)
+    : LPAREN (ASTERISK)+ RPAREN
     ;
 
 size_specification
