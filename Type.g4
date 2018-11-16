@@ -70,8 +70,8 @@ simple_type
     : enum_union_struct? Identifier
     ;
 
-pointer_indirection
-    : LPAREN (ASTERISK)+ RPAREN
+prototype_specification
+    : LPAREN ASTERISK* Identifier? RPAREN
     ;
 
 size_specification
@@ -79,5 +79,5 @@ size_specification
     ;
 
 type_name
-    : simple_type (ASTERISK)* pointer_indirection? (size_specification)* (param_list)?
+    : simple_type (ASTERISK)* prototype_specification? (size_specification)* (param_list)?
     ;
