@@ -76,6 +76,7 @@ prototype_specification
 
 size_specification
     : LBRACKET Size? RBRACKET
+    | LBRACKET Identifier RBRACKET
     ;
 
 type_name
