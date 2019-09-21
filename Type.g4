@@ -9,8 +9,22 @@ LBRACKET:   '[';
 RBRACKET:   ']';
 ASTERISK:   '*';
 COMMA:      ',';
+DOUBLECOLON: '::';
+COLON:      ':';
+ANONYMOUS:  'anonymous';
+AT:         'at';
 
-WS: [ \n\t\r]+ -> skip;
+SPEC_SYMBOL
+    :   '/'
+    |   '-'
+    |   '\\'
+    |   '.'
+    |   '_'
+    ;
+
+WS
+    : [ \n\t\r]+ -> skip
+    ;
 
 fragment
 IdentifierNondigit
@@ -51,11 +65,15 @@ Identifier
         )*
     ;
 
+Location
+    : WS AT WS .*?
+    ;
+
 Size
     : Digit+
     ;
 
-enum_union_struct
+kind_decoration
     : UNION
     | ENUM
     | STRUCT
@@ -66,17 +84,27 @@ param_list
     | LPAREN RPAREN
     ;
 
+anonymous_location_specification
+    : LPAREN ANONYMOUS kind_decoration? (Location)? RPAREN
+    ;
+
+complete_identifier
+    : Identifier
+    | complete_identifier DOUBLECOLON complete_identifier
+    | anonymous_location_specification
+    ;
+
 simple_type
-    : enum_union_struct? Identifier
+    : kind_decoration? complete_identifier
     ;
 
 prototype_specification
-    : LPAREN ASTERISK* Identifier? RPAREN
+    : LPAREN ASTERISK* complete_identifier? RPAREN
     ;
 
 size_specification
     : LBRACKET Size? RBRACKET
-    | LBRACKET Identifier RBRACKET
+    | LBRACKET complete_identifier RBRACKET
     ;
 
 type_name
