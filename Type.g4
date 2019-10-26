@@ -16,6 +16,9 @@ AT:         'at';
 CONST:      'const';
 RESTRICT:   'restrict';
 VOLATILE:   'volatile';
+REGISTER:   'register';
+EXTERN:     'extern';
+AUTO:       'auto';
 UNALIGNED:  '__unaligned';
 STATIC:     'static';
 UNSIGNED:   'unsigned';
@@ -88,6 +91,9 @@ kind_decoration
 
 modifier
     : STATIC
+    | EXTERN
+    | AUTO
+    | REGISTER
     ;
 
 qualifier
