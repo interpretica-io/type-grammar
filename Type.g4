@@ -13,6 +13,13 @@ DOUBLECOLON: '::';
 COLON:      ':';
 ANONYMOUS:  'anonymous';
 AT:         'at';
+CONST:      'const';
+RESTRICT:   'restrict';
+VOLATILE:   'volatile';
+UNALIGNED:  '__unaligned';
+STATIC:     'static';
+UNSIGNED:   'unsigned';
+SIGNED:     'signed';
 
 SPEC_SYMBOL
     :   '/'
@@ -24,6 +31,10 @@ SPEC_SYMBOL
 
 WS
     : [ \n\t\r]+ -> skip
+    ;
+
+WS_NOSKIP
+    : [ ]+
     ;
 
 fragment
@@ -65,10 +76,6 @@ Identifier
         )*
     ;
 
-Location
-    : WS AT WS .*?
-    ;
-
 Size
     : Digit+
     ;
@@ -79,13 +86,47 @@ kind_decoration
     | STRUCT
     ;
 
+modifier
+    : STATIC
+    ;
+
+qualifier
+    : CONST
+    | RESTRICT
+    | VOLATILE
+    | UNALIGNED
+    ;
+
+const_qualifier
+    : CONST
+    ;
+
+pre_qualifier
+    : qualifier
+    ;
+
+post_qualifier
+    : CONST
+    ;
+
+type_qualifier
+    : UNSIGNED
+    | SIGNED
+    ;
+
+pointer_const
+    : ASTERISK+ const_qualifier
+    | ASTERISK+
+    | const_qualifier
+    ;
+
 param_list
     : LPAREN type_name (COMMA type_name)* RPAREN
     | LPAREN RPAREN
     ;
 
 anonymous_location_specification
-    : LPAREN ANONYMOUS kind_decoration? (Location)? RPAREN
+    : LPAREN ANONYMOUS kind_decoration? (AT .*?)? RPAREN
     ;
 
 complete_identifier
@@ -95,11 +136,7 @@ complete_identifier
     ;
 
 simple_type
-    : kind_decoration? complete_identifier
-    ;
-
-prototype_specification
-    : LPAREN ASTERISK* complete_identifier? RPAREN
+    : modifier* (pre_qualifier*) kind_decoration? type_qualifier? complete_identifier+ post_qualifier* pointer_const* size_specification*
     ;
 
 size_specification
@@ -107,6 +144,12 @@ size_specification
     | LBRACKET complete_identifier RBRACKET
     ;
 
+full_specification
+    : LPAREN pointer_const* complete_identifier? RPAREN size_specification* (param_list)?
+    | LPAREN pointer_const* full_specification RPAREN size_specification* (param_list)?
+    | complete_identifier? size_specification* param_list
+    ;
+
 type_name
-    : simple_type (ASTERISK)* prototype_specification? (size_specification)* (param_list)?
+    : simple_type full_specification?
     ;
