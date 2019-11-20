@@ -23,6 +23,7 @@ UNALIGNED:  '__unaligned';
 STATIC:     'static';
 UNSIGNED:   'unsigned';
 SIGNED:     'signed';
+VARARG:     '...';
 
 SPEC_SYMBOL
     :   '/'
@@ -158,4 +159,5 @@ full_specification
 
 type_name
     : simple_type full_specification?
+    | VARARG
     ;
