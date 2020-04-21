@@ -19,7 +19,7 @@ VOLATILE:   'volatile';
 REGISTER:   'register';
 EXTERN:     'extern';
 AUTO:       'auto';
-UNALIGNED:  '__unaligned';
+UNALIGNED_:  '__unaligned';
 STATIC:     'static';
 UNSIGNED:   'unsigned';
 SIGNED:     'signed';
@@ -101,7 +101,7 @@ qualifier
     : CONST
     | RESTRICT
     | VOLATILE
-    | UNALIGNED
+    | UNALIGNED_
     ;
 
 const_qualifier
