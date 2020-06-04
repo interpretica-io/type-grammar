@@ -3,6 +3,7 @@ grammar Type;
 UNION:      'union';
 ENUM:       'enum';
 STRUCT:     'struct';
+CLS:        'class';
 LPAREN:     '(';
 RPAREN:     ')';
 LBRACKET:   '[';
@@ -88,6 +89,7 @@ kind_decoration
     : UNION
     | ENUM
     | STRUCT
+    | CLS
     ;
 
 modifier
