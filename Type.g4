@@ -9,6 +9,7 @@ RPAREN:     ')';
 LBRACKET:   '[';
 RBRACKET:   ']';
 ASTERISK:   '*';
+REF:        '&';
 COMMA:      ',';
 DOUBLECOLON: '::';
 COLON:      ':';
@@ -126,6 +127,8 @@ type_qualifier
 pointer_const
     : ASTERISK+ const_qualifier
     | ASTERISK+
+    | REF+ const_qualifier
+    | REF+
     | const_qualifier
     ;
 
