@@ -26,6 +26,8 @@ STATIC:     'static';
 UNSIGNED:   'unsigned';
 SIGNED:     'signed';
 VARARG:     '...';
+LEFT_ANGLE: '<';
+RIGHT_ANGLE:'>';
 
 SPEC_SYMBOL
     :   '/'
@@ -141,8 +143,13 @@ anonymous_location_specification
     : LPAREN ANONYMOUS kind_decoration? (AT .*?)? RPAREN
     ;
 
+angled_expression
+    : LEFT_ANGLE (.*?) (',' .*?)* RIGHT_ANGLE
+    ;
+
 complete_identifier
     : Identifier
+    | Identifier angled_expression
     | complete_identifier DOUBLECOLON complete_identifier
     | anonymous_location_specification
     ;
