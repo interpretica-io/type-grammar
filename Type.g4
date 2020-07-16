@@ -29,12 +29,13 @@ VARARG:     '...';
 LEFT_ANGLE: '<';
 RIGHT_ANGLE:'>';
 
-SPEC_SYMBOL
+SPECIAL_SYMBOL
     :   '/'
     |   '-'
     |   '\\'
     |   '.'
     |   '_'
+    |   '+'
     ;
 
 WS
