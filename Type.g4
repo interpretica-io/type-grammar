@@ -17,6 +17,7 @@ ANONYMOUS:  'anonymous';
 AT:         'at';
 CONST:      'const';
 RESTRICT:   'restrict';
+RESTRICT_:  '__restrict';
 VOLATILE:   'volatile';
 REGISTER:   'register';
 EXTERN:     'extern';
@@ -106,6 +107,7 @@ modifier
 qualifier
     : CONST
     | RESTRICT
+    | RESTRICT_
     | VOLATILE
     | UNALIGNED_
     ;
@@ -120,6 +122,7 @@ pre_qualifier
 
 post_qualifier
     : CONST
+    | RESTRICT_
     ;
 
 type_qualifier
@@ -156,7 +159,7 @@ complete_identifier
     ;
 
 simple_type
-    : modifier* (pre_qualifier*) kind_decoration? type_qualifier? complete_identifier+ post_qualifier* pointer_const* size_specification*
+    : modifier* (pre_qualifier*) kind_decoration? type_qualifier? complete_identifier+ post_qualifier* pointer_const* post_qualifier* size_specification*
     ;
 
 size_specification
