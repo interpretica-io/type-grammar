@@ -29,6 +29,7 @@ SIGNED:     'signed';
 VARARG:     '...';
 LEFT_ANGLE: '<';
 RIGHT_ANGLE:'>';
+ATOMIC:     '_Atomic';
 
 SPECIAL_SYMBOL
     :   '/'
@@ -110,6 +111,7 @@ qualifier
     | RESTRICT_
     | VOLATILE
     | UNALIGNED_
+    | ATOMIC
     ;
 
 const_qualifier
@@ -176,4 +178,5 @@ full_specification
 type_name
     : simple_type full_specification?
     | VARARG
+    | ATOMIC LPAREN type_name RPAREN
     ;
