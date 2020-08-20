@@ -154,11 +154,9 @@ angled_expression
     ;
 
 complete_identifier
-    : Identifier
-    | Identifier angled_expression
+    : kind_decoration? Identifier angled_expression?
     | complete_identifier DOUBLECOLON complete_identifier
     | anonymous_location_specification
-    | kind_decoration complete_identifier
     ;
 
 simple_type
