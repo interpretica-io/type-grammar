@@ -56,7 +56,7 @@ IdentifierNondigit
 
 fragment
 Nondigit
-    :   [a-zA-Z_]
+    :   [a-zA-Z_-]
     ;
 
 fragment
