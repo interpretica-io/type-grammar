@@ -30,6 +30,7 @@ VARARG:     '...';
 LEFT_ANGLE: '<';
 RIGHT_ANGLE:'>';
 ATOMIC:     '_Atomic';
+NS_DELIMITER: '`';
 
 SPECIAL_SYMBOL
     :   '/'
@@ -155,6 +156,7 @@ angled_expression
 
 complete_identifier
     : kind_decoration? Identifier angled_expression?
+    | NS_DELIMITER complete_identifier NS_DELIMITER DOUBLECOLON complete_identifier
     | complete_identifier DOUBLECOLON complete_identifier
     | anonymous_location_specification
     ;
