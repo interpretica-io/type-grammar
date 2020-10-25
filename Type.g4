@@ -155,9 +155,9 @@ angled_expression
     ;
 
 complete_identifier
-    : kind_decoration? Identifier angled_expression?
-    | NS_DELIMITER complete_identifier NS_DELIMITER DOUBLECOLON complete_identifier
+    : NS_DELIMITER complete_identifier NS_DELIMITER DOUBLECOLON complete_identifier
     | complete_identifier DOUBLECOLON complete_identifier
+    | kind_decoration? Identifier angled_expression?
     | anonymous_location_specification
     ;
 
