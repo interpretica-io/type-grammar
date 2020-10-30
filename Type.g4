@@ -150,8 +150,13 @@ anonymous_location_specification
     : LPAREN ANONYMOUS kind_decoration? (AT .*?)? RPAREN
     ;
 
+angled_expr_separators
+    : ' '
+    | ','
+    ;
+
 angled_expression
-    : LEFT_ANGLE (.*?) (',' .*?)* RIGHT_ANGLE
+    : LEFT_ANGLE (.*?) (angled_expr_separators .*?)* RIGHT_ANGLE
     ;
 
 complete_identifier
