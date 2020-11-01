@@ -42,11 +42,7 @@ SPECIAL_SYMBOL
     ;
 
 WS
-    : [ \n\t\r]+ -> skip
-    ;
-
-WS_NOSKIP
-    : [ ]+
+    : [ \n\t\r]+ -> channel(HIDDEN)
     ;
 
 fragment
@@ -150,13 +146,8 @@ anonymous_location_specification
     : LPAREN ANONYMOUS kind_decoration? (AT .*?)? RPAREN
     ;
 
-angled_expr_separators
-    : ' '
-    | ','
-    ;
-
 angled_expression
-    : LEFT_ANGLE (.*?) (angled_expr_separators .*?)* RIGHT_ANGLE
+    : LEFT_ANGLE (.*?) RIGHT_ANGLE
     ;
 
 complete_identifier
