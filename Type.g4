@@ -147,7 +147,7 @@ anonymous_location_specification
     ;
 
 angled_expression
-    : LEFT_ANGLE (.*?) RIGHT_ANGLE
+    : LEFT_ANGLE (.*?) (angled_expression (.*?))* RIGHT_ANGLE
     ;
 
 complete_identifier
