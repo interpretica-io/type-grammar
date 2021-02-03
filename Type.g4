@@ -167,8 +167,8 @@ size_specification
     ;
 
 full_specification
-    : LPAREN pointer_const* complete_identifier? RPAREN size_specification* (param_list)?
-    | LPAREN pointer_const* full_specification RPAREN size_specification* (param_list)?
+    : LPAREN (type_name DOUBLECOLON)? pointer_const* complete_identifier? RPAREN size_specification* (param_list)?
+    | LPAREN (type_name DOUBLECOLON)? pointer_const* full_specification RPAREN size_specification* (param_list)?
     | complete_identifier? size_specification* param_list
     ;
 
