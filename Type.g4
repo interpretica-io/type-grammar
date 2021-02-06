@@ -31,6 +31,7 @@ LEFT_ANGLE: '<';
 RIGHT_ANGLE:'>';
 ATOMIC:     '_Atomic';
 NS_DELIMITER: '`';
+NOEXCEPT:   'noexcept';
 
 SPECIAL_SYMBOL
     :   '/'
@@ -167,9 +168,9 @@ size_specification
     ;
 
 full_specification
-    : LPAREN (type_name DOUBLECOLON)? pointer_const* complete_identifier? RPAREN size_specification* (param_list)?
-    | LPAREN (type_name DOUBLECOLON)? pointer_const* full_specification RPAREN size_specification* (param_list)?
-    | complete_identifier? size_specification* param_list
+    : LPAREN (type_name DOUBLECOLON)? pointer_const* complete_identifier? RPAREN size_specification* (param_list)? NOEXCEPT?
+    | LPAREN (type_name DOUBLECOLON)? pointer_const* full_specification RPAREN size_specification* (param_list)? NOEXCEPT?
+    | complete_identifier? size_specification* param_list NOEXCEPT?
     ;
 
 type_name
