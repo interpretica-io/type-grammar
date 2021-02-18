@@ -167,7 +167,8 @@ post_type
     ;
 
 size_specification
-    : LBRACKET (.*?) RBRACKET
+    : LBRACKET Size? RBRACKET
+    | LBRACKET complete_identifier RBRACKET
     ;
 
 template_type
