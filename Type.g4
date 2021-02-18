@@ -162,10 +162,6 @@ pre_type
     : modifier* (pre_qualifier *) kind_decoration? type_qualifier?
     ;
 
-pre_simple_type
-    : pre_type complete_identifier
-    ;
-
 post_type
     : post_qualifier* pointer_const* post_qualifier* size_specification* NOEXCEPT_?
     ;
@@ -178,12 +174,12 @@ template_type
     : angled_expression
     ;
 
-name
-    : complete_identifier
-    ;
-
 class_spec
     : type_name DOUBLECOLON
+    ;
+
+pre_simple_type
+    : pre_type complete_identifier pointer_const* post_type
     ;
 
 inner
@@ -193,8 +189,8 @@ inner
 
 type_name
     : pre_simple_type Identifier? template_type? post_type
-    | pre_simple_type name param_list post_type
-    | pre_simple_type LPAREN inner RPAREN param_list? post_type
+    | pre_simple_type complete_identifier param_list post_type
+    | pre_simple_type LPAREN inner? RPAREN param_list? post_type
     | ATOMIC LPAREN type_name RPAREN
     | VARARG
     ;
