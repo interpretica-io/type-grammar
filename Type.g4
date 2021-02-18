@@ -158,23 +158,43 @@ complete_identifier
     | anonymous_location_specification
     ;
 
-simple_type
-    : modifier* (pre_qualifier*) kind_decoration? type_qualifier? complete_identifier+ post_qualifier* pointer_const* post_qualifier* size_specification*
+pre_type
+    : modifier* (pre_qualifier *) kind_decoration? type_qualifier?
+    ;
+
+pre_simple_type
+    : pre_type complete_identifier
+    ;
+
+post_type
+    : post_qualifier* pointer_const* post_qualifier* size_specification* NOEXCEPT_?
     ;
 
 size_specification
-    : LBRACKET Size? RBRACKET
-    | LBRACKET complete_identifier RBRACKET
+    : LBRACKET (.*?) RBRACKET
     ;
 
-full_specification
-    : LPAREN (type_name DOUBLECOLON)? pointer_const* complete_identifier? RPAREN size_specification* (param_list)? NOEXCEPT_?
-    | LPAREN (type_name DOUBLECOLON)? pointer_const* full_specification RPAREN size_specification* (param_list)? NOEXCEPT_?
-    | complete_identifier? size_specification* param_list NOEXCEPT_?
+template_type
+    : angled_expression
+    ;
+
+name
+    : complete_identifier
+    ;
+
+class_spec
+    : type_name DOUBLECOLON
+    ;
+
+inner
+    : class_spec? pointer_const* Identifier template_type? post_type
+    | class_spec? pointer_const* LPAREN inner post_type RPAREN param_list
     ;
 
 type_name
-    : simple_type full_specification?
-    | VARARG
+    : pre_simple_type Identifier? template_type? post_type
+    | pre_simple_type name param_list post_type
+    | pre_simple_type LPAREN inner RPAREN param_list? post_type
     | ATOMIC LPAREN type_name RPAREN
+    | VARARG
     ;
