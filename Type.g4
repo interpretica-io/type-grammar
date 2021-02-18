@@ -191,7 +191,8 @@ inner
 type_name
     : pre_simple_type Identifier? template_type? post_type
     | pre_simple_type complete_identifier param_list post_type
-    | pre_simple_type LPAREN inner? RPAREN param_list? post_type
+    | pre_simple_type param_list? post_type
+    | pre_simple_type LPAREN inner RPAREN param_list? post_type
     | ATOMIC LPAREN type_name RPAREN
     | VARARG
     ;
