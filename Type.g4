@@ -185,14 +185,13 @@ pre_simple_type
 
 inner
     : class_spec? pointer_const* Identifier template_type? post_type
-    | class_spec? pointer_const* LPAREN inner post_type RPAREN param_list
+    | class_spec? pointer_const* LPAREN inner post_type RPAREN param_list?
     ;
 
 type_name
     : pre_simple_type Identifier? template_type? post_type
     | pre_simple_type complete_identifier param_list post_type
-    | pre_simple_type param_list? post_type
-    | pre_simple_type LPAREN inner RPAREN param_list? post_type
+    | pre_simple_type (LPAREN inner RPAREN)? param_list post_type
     | ATOMIC LPAREN type_name RPAREN
     | VARARG
     ;
