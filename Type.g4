@@ -185,7 +185,7 @@ pre_simple_type
 
 inner
     : class_spec? pointer_const* Identifier? template_type? post_type
-    | class_spec? pointer_const* LPAREN inner post_type RPAREN param_list?
+    | class_spec? pointer_const* LPAREN inner RPAREN post_type param_list?
     ;
 
 type_name
