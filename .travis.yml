@@ -9,5 +9,8 @@ matrix:
       os: linux
       dist: focal
 
+install:
+  - pip3 install junit_xml
+
 script:
   - ./test.sh
