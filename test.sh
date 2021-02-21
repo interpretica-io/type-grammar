@@ -1,10 +1,39 @@
 #!/bin/bash
+junit_xml=
+if [ "$1" == "junit" ] ; then
+	junit_xml=$2
+	shift 2
+fi
+
 test="$1"
 top_folder="$(pwd)"
 parslr_git="https://github.com/maximmenshikov/parslr.git"
 antlr_file="antlr-4.9.1-complete.jar"
 antlr_url="https://www.antlr.org/download/antlr-4.9.1-complete.jar"
 test_path="${top_folder}/test"
+
+function fail()
+{
+	echo $@ >&2
+	exit 1
+}
+
+function run_tests()
+{
+	local grammar="$1"
+	local antlr_path="$2"
+	local input="$3"
+	local output="$4"
+
+	rm -rf "$(pwd)/tmp"
+	python3 -m parslr -g "${grammar}" \
+					  -a "${antlr_path}" \
+					  -r "entire_input" \
+					  -i "${input}" \
+					  -o "${output}"
+	result=$?
+	return "${result}"
+}
 
 function run_test()
 {
@@ -32,40 +61,64 @@ pushd build
 		git clone "${parslr_git}"
 	fi
 	if [ ! -d parslr ] ; then
-		exit 1
+		fail "Failed to download parslr"
 	fi
 	if [ ! -f "${antlr_file}" ] ; then
 		wget "${antlr_url}"
 	fi
 	if [ ! -f "${antlr_file}" ] ; then
-		exit 2
+		fail "Failed to download antlr distribution"
 	fi
 
 	antlr_path="$(pwd)/${antlr_file}"
 	pushd parslr
 		tests=
-		if [ -n "${test}" ] ; then
-			tests=$(find ${test_path}/${test}.txt)
-		else
-			tests=$(find ${test_path}/*.txt)
-		fi
-		failed=
-		for file in ${tests} ; do
-			run_test "${top_folder}/Type.g4" \
-					 "${antlr_path}" \
-					 "${file}"
-			if [ "$?" != "0" ] ; then
-				failed="${failed} $(basename ${file})"
+		if [ -n "${junit_xml}" ] ; then
+			# JUnit results (less data in stderr)
+			if [ -n "${test}" ] ; then
+				fail "There should be no particular test selected in JUnit mode"
 			fi
-		done
+			if [ -n "${test}" ] ; then
+				tests="${test_path}/${test}.txt"
+			else
+				tests="${test_path}"
+			fi
 
-		if [ "${failed}" != "" ] ; then
-			echo "====="
-			echo "All failed tests:"
-			for fail in ${failed} ; do
-				echo " - ${fail}"
+			run_tests "${top_folder}/Type.g4" \
+					  "${antlr_path}" \
+					  "${tests}" \
+					  "${junit_xml}"
+			failed=$?
+			if [ "$failed" != "0" ] ; then
+				echo "Total failed tests: ${failed}" >&2
+				exit $failed
+			fi
+		else
+			# One-by-one execution (information about particular failed tests is
+			# in stderr)
+			if [ -n "${test}" ] ; then
+				tests=$(find ${test_path}/${test}.txt)
+			else
+				tests=$(find ${test_path}/*.txt)
+			fi
+			failed=
+			for file in ${tests} ; do
+				run_test "${top_folder}/Type.g4" \
+						 "${antlr_path}" \
+						 "${file}"
+				if [ "$?" != "0" ] ; then
+					failed="${failed} $(basename ${file})"
+				fi
 			done
-			exit 1
+
+			if [ "${failed}" != "" ] ; then
+				echo "=====" >&2
+				echo "All failed tests:" >&2
+				for fail in ${failed} ; do
+					echo " - ${fail}" >&2
+				done
+				exit 1
+			fi
 		fi
 	popd
 popd
