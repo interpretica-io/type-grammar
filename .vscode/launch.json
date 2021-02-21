@@ -10,7 +10,7 @@
             "request": "launch",
             "input": "input.txt",
             "grammar": "Type.g4",
-            "startRule": "type_name",
+            "startRule": "entire_input",
             "printParseTree": true,
             "visualParseTree": true
         }
