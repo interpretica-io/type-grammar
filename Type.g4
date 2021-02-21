@@ -32,6 +32,8 @@ RIGHT_ANGLE:'>';
 ATOMIC:     '_Atomic';
 NS_DELIMITER: '`';
 NOEXCEPT_:  'noexcept';
+LONG:       'long';
+COMPLEX:    '_Complex';
 
 SPECIAL_SYMBOL
     :   '/'
@@ -103,6 +105,11 @@ modifier
     | REGISTER
     ;
 
+complex_name
+    : LONG
+    | COMPLEX
+    | Identifier
+    ;
 qualifier
     : CONST
     | RESTRICT
@@ -154,12 +161,16 @@ angled_expression
 complete_identifier
     : NS_DELIMITER complete_identifier NS_DELIMITER DOUBLECOLON complete_identifier
     | complete_identifier DOUBLECOLON complete_identifier
-    | kind_decoration? Identifier angled_expression?
+    | kind_decoration? complex_name+ angled_expression?
     | anonymous_location_specification
     ;
 
-simple_type
-    : modifier* (pre_qualifier*) kind_decoration? type_qualifier? complete_identifier+ post_qualifier* pointer_const* post_qualifier* size_specification*
+pre_type
+    : modifier* (pre_qualifier *) kind_decoration? type_qualifier?
+    ;
+
+post_type
+    : post_qualifier* pointer_const* post_qualifier* size_specification* NOEXCEPT_?
     ;
 
 size_specification
@@ -167,14 +178,31 @@ size_specification
     | LBRACKET complete_identifier RBRACKET
     ;
 
-full_specification
-    : LPAREN (type_name DOUBLECOLON)? pointer_const* complete_identifier? RPAREN size_specification* (param_list)? NOEXCEPT_?
-    | LPAREN (type_name DOUBLECOLON)? pointer_const* full_specification RPAREN size_specification* (param_list)? NOEXCEPT_?
-    | complete_identifier? size_specification* param_list NOEXCEPT_?
+template_type
+    : angled_expression
+    ;
+
+class_spec
+    : type_name DOUBLECOLON
+    ;
+
+pre_simple_type
+    : pre_type complete_identifier pointer_const* post_type
+    ;
+
+inner
+    : class_spec? pointer_const* Identifier? template_type? post_type
+    | class_spec? pointer_const* LPAREN inner RPAREN post_type param_list?
     ;
 
 type_name
-    : simple_type full_specification?
-    | VARARG
+    : pre_simple_type Identifier template_type? post_type
+    | pre_simple_type complete_identifier param_list post_type
+    | pre_simple_type (LPAREN inner RPAREN)? param_list? post_type
     | ATOMIC LPAREN type_name RPAREN
+    | VARARG
+    ;
+
+entire_input
+    : type_name EOF
     ;

@@ -1,0 +1,1 @@
+struct __is_integer<signed char>

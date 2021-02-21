@@ -1,0 +1,1 @@
+enum tst::`struct somename<void>`::(anonymous at ./build/openvef/strings/string_003_preprocess16.cpp:16:7)

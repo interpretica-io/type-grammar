@@ -1,0 +1,13 @@
+notifications:
+  email: false
+
+language: bash
+
+matrix:
+  include:
+    - name: "Ubuntu 20.04"
+      os: linux
+      dist: focal
+
+script:
+  - ./test.sh

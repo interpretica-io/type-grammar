@@ -1,0 +1,1 @@
+struct std::__future_base::_State_baseV2::_Setter<void, void> & (*)(void) noexcept
