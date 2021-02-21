@@ -1,7 +1,17 @@
 #!/bin/bash
+function fail()
+{
+	echo $@ >&2
+	exit 1
+}
+
 junit_xml=
 if [ "$1" == "junit" ] ; then
 	junit_xml=$2
+	junit_xml=$(realpath $junit_xml 2> /dev/null)
+	if [ "${junit_xml}" == "" ] ; then
+		fail "Invalid JUnit output path: '${junit_xml}'"
+	fi
 	shift 2
 fi
 
@@ -11,12 +21,6 @@ parslr_git="https://github.com/maximmenshikov/parslr.git"
 antlr_file="antlr-4.9.1-complete.jar"
 antlr_url="https://www.antlr.org/download/antlr-4.9.1-complete.jar"
 test_path="${top_folder}/test"
-
-function fail()
-{
-	echo $@ >&2
-	exit 1
-}
 
 function run_tests()
 {
