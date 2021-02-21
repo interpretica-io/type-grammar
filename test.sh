@@ -65,6 +65,7 @@ pushd build
 			for fail in ${failed} ; do
 				echo " - ${fail}"
 			done
+			exit 1
 		fi
 	popd
 popd
