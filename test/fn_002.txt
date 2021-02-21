@@ -1,0 +1,1 @@
+int (*)(struct obj *, const long *)
