@@ -195,3 +195,7 @@ type_name
     | ATOMIC LPAREN type_name RPAREN
     | VARARG
     ;
+
+entire_input
+    : type_name EOF
+    ;
