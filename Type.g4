@@ -32,6 +32,8 @@ RIGHT_ANGLE:'>';
 ATOMIC:     '_Atomic';
 NS_DELIMITER: '`';
 NOEXCEPT_:  'noexcept';
+LONG:       'long';
+COMPLEX:    '_Complex';
 
 SPECIAL_SYMBOL
     :   '/'
@@ -103,6 +105,11 @@ modifier
     | REGISTER
     ;
 
+complex_name
+    : LONG
+    | COMPLEX
+    | Identifier
+    ;
 qualifier
     : CONST
     | RESTRICT
@@ -154,7 +161,7 @@ angled_expression
 complete_identifier
     : NS_DELIMITER complete_identifier NS_DELIMITER DOUBLECOLON complete_identifier
     | complete_identifier DOUBLECOLON complete_identifier
-    | kind_decoration? Identifier angled_expression?
+    | kind_decoration? complex_name+ angled_expression?
     | anonymous_location_specification
     ;
 
@@ -189,7 +196,7 @@ inner
     ;
 
 type_name
-    : pre_simple_type Identifier? template_type? post_type
+    : pre_simple_type Identifier template_type? post_type
     | pre_simple_type complete_identifier param_list post_type
     | pre_simple_type (LPAREN inner RPAREN)? param_list? post_type
     | ATOMIC LPAREN type_name RPAREN
