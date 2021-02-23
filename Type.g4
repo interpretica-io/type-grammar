@@ -34,6 +34,8 @@ NS_DELIMITER: '`';
 NOEXCEPT_:  'noexcept';
 LONG:       'long';
 COMPLEX:    '_Complex';
+ATTRIBUTE:  '__attribute__';
+QUOTE:      '"';
 
 SPECIAL_SYMBOL
     :   '/'
@@ -169,8 +171,17 @@ pre_type
     : modifier* (pre_qualifier *) kind_decoration? type_qualifier?
     ;
 
+probably_quoted
+    : QUOTE
+    | (.*?)
+    ;
+attribute
+    : NOEXCEPT_
+    | ATTRIBUTE LPAREN LPAREN probably_quoted RPAREN RPAREN
+    ;
+
 post_type
-    : post_qualifier* pointer_const* post_qualifier* size_specification* NOEXCEPT_?
+    : post_qualifier* pointer_const* post_qualifier* size_specification* attribute*
     ;
 
 size_specification
