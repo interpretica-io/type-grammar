@@ -14,6 +14,7 @@ COMMA:      ',';
 DOUBLECOLON: '::';
 COLON:      ':';
 ANONYMOUS:  'anonymous';
+LAMBDA:     'lambda';
 AT:         'at';
 CONST:      'const';
 RESTRICT:   'restrict';
@@ -153,7 +154,7 @@ param_list
     ;
 
 anonymous_location_specification
-    : LPAREN ANONYMOUS kind_decoration? (AT .*?)? RPAREN
+    : LPAREN (ANONYMOUS | LAMBDA) kind_decoration? (AT .*?)? RPAREN
     ;
 
 angled_expression
