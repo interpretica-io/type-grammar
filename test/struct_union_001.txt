@@ -1,0 +1,1 @@
+struct `struct __pthread_cond_s`::`struct (anonymous at /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:94:17)`::(anonymous at /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:97:5) *
