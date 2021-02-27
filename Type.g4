@@ -165,7 +165,7 @@ complete_identifier
     : NS_DELIMITER complete_identifier NS_DELIMITER DOUBLECOLON complete_identifier
     | complete_identifier DOUBLECOLON complete_identifier
     | kind_decoration? complex_name+ angled_expression?
-    | anonymous_location_specification
+    | kind_decoration? anonymous_location_specification
     ;
 
 pre_type
