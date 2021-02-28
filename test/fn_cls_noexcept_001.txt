@@ -1,0 +1,1 @@
+void (class std::thread::*&&(*)(void (class std::thread::*&)(void)) noexcept)(void)
