@@ -157,8 +157,14 @@ anonymous_location_specification
     : LPAREN (ANONYMOUS | LAMBDA) kind_decoration? (AT .*?)? RPAREN
     ;
 
+template_param
+    : angled_expression
+    | type_name
+    | (.*?)
+    ;
+
 angled_expression
-    : LEFT_ANGLE (.*?) (angled_expression (.*?))* RIGHT_ANGLE
+    : LEFT_ANGLE template_param (COMMA template_param)* RIGHT_ANGLE
     ;
 
 complete_identifier
