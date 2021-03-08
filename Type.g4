@@ -158,8 +158,7 @@ anonymous_location_specification
     ;
 
 template_param
-    : angled_expression
-    | type_name
+    : type_name
     | (.*?)
     ;
 
