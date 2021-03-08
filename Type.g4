@@ -163,7 +163,8 @@ template_param
     ;
 
 angled_expression
-    : LEFT_ANGLE template_param (COMMA template_param)* RIGHT_ANGLE
+    : LEFT_ANGLE RIGHT_ANGLE
+    | LEFT_ANGLE template_param (COMMA template_param)* RIGHT_ANGLE
     ;
 
 complete_identifier
