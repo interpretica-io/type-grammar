@@ -149,8 +149,7 @@ pointer_const
     ;
 
 param_list
-    : LPAREN type_name (COMMA type_name)* RPAREN
-    | LPAREN RPAREN
+    : LPAREN (type_name (COMMA type_name)*)? RPAREN
     ;
 
 anonymous_location_specification
@@ -170,8 +169,7 @@ angled_expression
 complete_identifier
     : NS_DELIMITER complete_identifier NS_DELIMITER DOUBLECOLON complete_identifier
     | complete_identifier DOUBLECOLON complete_identifier
-    | kind_decoration? complex_name+ angled_expression?
-    | kind_decoration? anonymous_location_specification
+    | kind_decoration? (complex_name+ angled_expression? | anonymous_location_specification)
     ;
 
 pre_type
@@ -182,6 +180,7 @@ probably_quoted
     : QUOTE
     | (.*?)
     ;
+
 attribute
     : NOEXCEPT_
     | ATTRIBUTE LPAREN LPAREN probably_quoted RPAREN RPAREN
@@ -192,8 +191,7 @@ post_type
     ;
 
 size_specification
-    : LBRACKET Size? RBRACKET
-    | LBRACKET complete_identifier RBRACKET
+    : LBRACKET (Size? | complete_identifier) RBRACKET
     ;
 
 template_type
@@ -209,14 +207,11 @@ pre_simple_type
     ;
 
 inner
-    : class_spec? pointer_const* Identifier? template_type? post_type
-    | class_spec? pointer_const* Identifier? LPAREN inner RPAREN post_type param_list? attribute*
+    : class_spec? pointer_const* Identifier? (template_type? | LPAREN inner RPAREN) post_type param_list? attribute*
     ;
 
 type_name
-    : pre_simple_type template_type? post_type
-    | pre_simple_type param_list post_type
-    | pre_simple_type Identifier? (LPAREN inner RPAREN)? param_list? post_type
+    : pre_simple_type (template_type? | param_list | Identifier? (LPAREN inner RPAREN)? param_list?) post_type
     | ATOMIC LPAREN type_name RPAREN
     | VARARG
     ;
